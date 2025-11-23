@@ -16,6 +16,10 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: 'Melbourne Structural',
   description: 'Practical structural engineering services in Melbourne.',
+  icons: {
+    icon: '/images/favicon.svg', // Relative path to your icon
+    apple: '/images/favicon.svg', // For Apple devices
+  },
 };
 
 export default function RootLayout({
