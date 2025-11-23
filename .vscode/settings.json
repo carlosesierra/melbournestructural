@@ -1,0 +1,5 @@
+{
+    "workbench.settings.openDefaultSettings": false,
+    "workbench.settings.openDefaultKeybindings": true,
+    "css.lint.unknownAtRules": "ignore"
+}
