@@ -34,7 +34,7 @@ const items = [
   { title: 'Forensic engineering',
     copy: 'Investigation of damaged structures using non-destructive testing (such as GPR) and destructive testing (core samples, footing exposures, lab testing) with clear repair recommendations.',
     video: '', 
-    poster: '/images/services-03.png',
+    poster: '/images/services-03.jpg',
   },
   { title: 'Environmental engineering',
     copy: 'Contamination and soil testing for council permits and waste removal, with practical advice for builders and owners.',
