@@ -58,7 +58,7 @@ export default function Services() {
         <div className='mt-12 grid gap-6 sm:mt-16 md:grid-cols-2' //Cards grid
         >
           {items.map((item) => (
-            <div data-aos='fade-left' className='relative' key={item.title}  //Card
+            <div data-aos='fade-up' className='relative' key={item.title}  //Card
             >
               <div className='absolute inset-px rounded-3xl bg-concrete' />
                 <div className='relative flex h-full flex-col overflow-hidden rounded-3xl bg-white'>

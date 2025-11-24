@@ -185,7 +185,7 @@ export default function GetAQuote() {
               <label 
                 htmlFor='attachments' 
                 className='block text-sm/6 font-semibold text-white'>
-                Upload File (max 500KB)
+                Upload File (max 2MB)
               </label>
               <div className='mt-2.5'>
                 <input
@@ -245,14 +245,14 @@ export default function GetAQuote() {
           </div>
         </form>
         <div 
-          data-aos='fade-left'
+          data-aos='flip-left'
           className='flex mt-16 '>
             <span className='sr-only'>melbourne Structural</span>
-                <img
-                  alt=''
-                  src='/images/favicon.svg'
-                  className='h-80 w-full'
-                />
+              <img
+                alt=''
+                src='/images/favicon.svg'
+                className='h-80 w-full'
+              />
           </div>
       </div>
       </div>
