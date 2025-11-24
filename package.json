@@ -12,6 +12,7 @@
     "@emailjs/browser": "^4.4.1",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
+    "aos": "^2.3.4",
     "next": "16.0.3",
     "pnpm": "^10.23.0",
     "react": "19.2.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

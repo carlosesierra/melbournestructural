@@ -2,20 +2,24 @@
 
 import { useEffect, useState } from 'react';
 
-const aboutUsStyle = {
-  preTitleHeading:`mt-3 text-charcoal uppercase`,
-  title: `text-charcoal`,
-  img: `h-48 w-80 m-auto object-contain white opacity-90 hover:grayscale-0 `,
-  copy:`mt-8 text-charcoal`,
+const aboutus = {
+  id:`aboutus`,
+  content:{
+    pretitle: 'About Us',
+    title: `Structural and civil engineering for residential buildings`,
+    copy:<>Structural Melbourne specialises in structural and civil engineering for residential buildings. Our goal is to produce cost-effective, buildable designs and clear documentation that make construction straightforward for builders and owners.<br/><br/>We can deliver your complete engineering package - from soil reports through to final certification - all at competitive rates and with fast turnaround times.<br/><br/>We develop structural design solutions that are practical, economical and innovative, while meeting our clients’ objectives and complying with all relevant Australian Standards. Where possible, we aim for outcomes that are both buildable and environmentally responsible.<br/><br/>We work across residential, commercial and light industrial projects, using modern analysis, design and drafting software. Our designs cover a wide range of materials including timber, structural steel, masonry, blockwork and reinforced concrete.<br/><br/>We look forward to working with you on your next project - welcome to Melbourne Structural!</>,
+    bg:`images/blueprint.svg`,
+  },
+  style:{
+    pretitle:`mt-3 text-charcoal uppercase`,
+    title: `text-charcoal`,
+    img: `h-48 w-80 m-auto object-contain white opacity-90 hover:grayscale-0 `,
+    copy:`mt-8 text-charcoal`,
+    bg:`opacity-10 w-5/6 object-cover object-center lg:object-right motion-safe:animate-[bounce_45s_linear_infinite]`,
+  }
 }
 
-//content
-const aboutUsHeading = {
-  preTitle: 'About Us',
-  title: `Structural and civil engineering for residential buildings`,
-}
-
-const aboutUsImages = [
+const items = [
   '/images/about-01.jpg',
   '/images/about-02.jpg',
   '/images/about-03.jpg',
@@ -33,25 +37,25 @@ export default function AboutUs() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (aboutUsImages.length <= 1) return;
+    if (items.length <= 1) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % aboutUsImages.length);
-    }, 4000); // 4s per image – tweak as you like
+      setCurrentIndex((prev) => (prev + 1) % items.length);
+    }, 2000); // 4s per image – tweak as you like
 
     return () => clearInterval(interval);
   }, []);
 
-  const prevIndex = (currentIndex - 1 + aboutUsImages.length) % aboutUsImages.length;
+  const prevIndex = (currentIndex - 1 + items.length) % items.length;
 
   return (
-    <section className='relative isolate overflow-hidden px-6 sm:py-32 py-16 scroll-mt-16 lg:overflow-visible lg:px-0'  id='about'>
+    <section className='relative isolate overflow-hidden px-6 sm:py-32 py-16 scroll-mt-16 lg:overflow-visible lg:px-0'  id='aboutus'>
       <div className='absolute inset-0 -z-10 overflow-hidden' // bg image
       >
         <img
             alt=''
-            src='images/blueprint.svg'
-            className='opacity-10 w-5/6 object-cover object-center lg:object-right motion-safe:animate-[bounce_45s_linear_infinite]'
+            src={aboutus.content.bg}
+            className={aboutus.style.bg}
           />
       </div>
        {/* copy */}
@@ -59,9 +63,9 @@ export default function AboutUs() {
         <div className='lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8'>
           <div className='lg:pr-4'>
             <div className='lg:max-w-lg'>
-              <p className={aboutUsStyle.preTitleHeading}>{aboutUsHeading.preTitle}</p>
-              <h2 className={aboutUsStyle.title}>{aboutUsHeading.title}</h2>
-              <p className={aboutUsStyle.copy}>
+              <p data-aos='fade-up' className={aboutus.style.pretitle}>{aboutus.content.pretitle}</p>
+              <h2 data-aos='fade-up' className={aboutus.style.title}>{aboutus.content.title}</h2>
+              <p data-aos='fade-up' className={aboutus.style.copy}>
                 {aboutUs.copy}
               </p>
             </div>
@@ -69,8 +73,9 @@ export default function AboutUs() {
         </div>
        
         <div className='-mt-12 -ml-12 p-0 lg:sticky lg:top-30 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden  motion-safe:animate-float'>
-          <div className='-mt-12 -ml-12 p-12 lg:sticky lg:top-30 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden '>
+          <div className='-mt-12 p-12 lg:sticky lg:top-30 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden '>
             <div
+              data-aos='fade-in'
               className='
                 relative
                 w-3xl max-w-none sm:w-228
@@ -85,14 +90,14 @@ export default function AboutUs() {
               <img
                 key={`prev-${prevIndex}`}
                 alt=''
-                src={aboutUsImages[prevIndex]}
+                src={items[prevIndex]}
                 className='absolute inset-0 h-full w-full object-cover z-10'
               />
               <img
                 key={`curr-${currentIndex}`}
                 alt=''
-                src={aboutUsImages[currentIndex]}
-                className='absolute inset-0 h-full w-full object-cover z-20 motion-safe:animate-slide-left'
+                src={items[currentIndex]}
+                className='absolute inset-0 h-full w-full object-cover z-20 drop-shadow-xl/50 motion-safe:animate-slide-left'
               />
             </div>
           </div>

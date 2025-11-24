@@ -5,20 +5,25 @@ import emailjs from '@emailjs/browser';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 const getaQuote = {
+  id:'getaquote',
+  content:{
+    pretitle: 'Get a Quote',
+    title: `Get in touch with Melbourne Structural`,
+    subtitle: `Our team is ready to assist you with your structural engineering needs. `,
+    form:{
+      success: `Thanks. your message has been sent. We'll be in touch shortly.`,
+      error: `Something went wrong sending your message. Please try again or email us directly.`,
+    }
+  },
   style:{
-    preTitleHeading:`mt-3 text-white/60 uppercase`,
-    titleHeading: `text-white`,
-    subtitleHeading:`mt-3 text-white/80`,
+    pretitle:`mt-3 text-white/60 uppercase`,
+    title: `text-white`,
+    subtitle:`mt-3 text-white/80`,
     img: `h-48 w-80 m-auto object-contain white opacity-90 hover:grayscale-0 `,
     cta:`rounded-full bg-yellow-400 px-5 py-2.5 font-semibold text-navy shadow-sm hover:bg-yellow-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-400 disabled:bg-gray-400 disabled:text-gray-700 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-gray-400`,
   },
-  preTitleHeading: 'Get a Quote',
-  titleHeading: `Get in touch with Melbourne Structural`,
-  subtitleHeading: `Our team is ready to assist you with your structural engineering needs. `,
-  formSuccessMessage: `Thanks. your message has been sent. We'll be in touch shortly.`,
-  formErrorMessage: `Something went wrong sending your message. Please try again or email us directly.`,
+  
 }
-
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -70,148 +75,187 @@ export default function GetAQuote() {
   };
 
   return (
-    <div id='contact' className='isolate bg-navy px-6 py-24 sm:py-32 lg:px-8'>
-      <div className='mx-auto max-w-2xl text-center' // Heading
-      >
-        <p className={getaQuote.style.preTitleHeading}>{getaQuote.preTitleHeading}</p>
-        <h2 className={getaQuote.style.titleHeading}>{getaQuote.titleHeading}</h2>
-        <p className={getaQuote.style.subtitleHeading}> {getaQuote.subtitleHeading} </p>
-      </div>
-      <form  // Form 
-        ref={formRef} 
-        onSubmit={handleSubmit} 
-        className='mx-auto mt-16 max-w-xl sm:mt-20'>
-        <div className='grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2' // Form fields
-        >
-          <div // Form name
-          >
-            <label 
-              htmlFor='name' 
-              className='block text-sm/6 font-semibold text-white'>
-              Name
-            </label>
-            <div className='mt-2.5'>
-              <input
-                id='name'
-                name='name'
-                type='text'
-                required
-                autoComplete='name'
-                className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500'
-              />
-            </div>
-          </div>
 
-          <div // Form phone  
+    <section className='py-24 sm:py-32 bg-navy' id={getaQuote.id}>
+      <div className='mx-auto max-w-6xl px-4 sm:px-6 lg:px-8'>
+        <div className='mx-auto max-w-4xl text-left' //Section 
+        >
+        <p data-aos='fade-up' className={getaQuote.style.pretitle}>{getaQuote.content.pretitle}</p>
+        <h2 data-aos='fade-up' className={getaQuote.style.title}>{getaQuote.content.title}</h2>
+        <p data-aos='fade-up' className={getaQuote.style.subtitle}> {getaQuote.content.subtitle} </p>
+        </div>
+
+      <div className='grid gap-6 md:grid-cols-2' //Cards grid
+        >
+
+        <form  // Form 
+          ref={formRef} 
+          onSubmit={handleSubmit} 
+          className='mx-auto mt-16 max-w-xl'>
+          <div className='grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2' // fields
           >
-            <label 
-              htmlFor='phone' 
-              className='block text-sm/6 font-semibold text-white'>
-              Phone
-            </label>
-            <div className='mt-2.5'>
-              <div className='flex rounded-md bg-white/5 outline-1 -outline-offset-1 outline-white/10 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-500'>
+            <div // name
+             data-aos='fade-up'
+            >
+              <label 
+                htmlFor='name' 
+                className='block text-sm/6 font-semibold text-white'>
+                Name
+              </label>
+              <div className='mt-2.5'>
                 <input
-                  id='phone'
-                  name='phone'
-                  type='tel'
-                  placeholder='123-456-7890'
-                  className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500'
+                  id='name'
+                  name='name'
+                  type='text'
+                    placeholder='Your name'
+                  autoComplete='name'
+                  required
+                  className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-1 focus:-outline-offset-2 focus:outline-white'
                 />
               </div>
             </div>
-          </div>
-          <div className='sm:col-span-2'>
-            <label 
-              htmlFor='email' 
-              className='block text-sm/6 font-semibold text-white'>
-              Email
-            </label>
-            <div className='mt-2.5'>
-              <input
-                id='email'
-                name='email'
-                type='email'
-                required
-                autoComplete='email'
-                className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500'
-              />
-            </div>
-          </div>
-          <div className='sm:col-span-2'>
-            <label 
-              htmlFor='message' 
-              className='block text-sm/6 font-semibold text-white'>
-              Message
-            </label>
-            <div className='mt-2.5'>
-              <textarea
-                id='message'
-                name='message'
-                rows={4}
-                className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500'
-                defaultValue={''}
-                placeholder='Briefly describe the scope including any relevant information.'
-              />
-            </div>
-          </div>
-          <div className='sm:col-span-2'>
-            <label 
-              htmlFor='attachments' 
-              className='block text-sm/6 font-semibold text-white'>
-              Upload File (max 500KB)
-            </label>
-            <div className='mt-2.5'>
-              <input
-                id='attachments'
-                name='attachments'
-                type='file'
-                className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500'
-              />
-            </div>
-          </div>
 
-          {status === 'success' && ( // Status / feedback
-            <p className='text-sm text-teal'>
-              {/* Thanks — your message has been sent. We'll be in touch shortly. */}
-              {getaQuote.formSuccessMessage}
-            </p>
-          )}
-          {status === 'error' && (
-            <p className='text-sm text-red-600'>
-              {/* Something went wrong sending your message. Please try again or email us directly. */}
-              {getaQuote.formErrorMessage}
-            </p>
-          )}
-      
-        </div>
-        <div className='sm:col-span-2 mt-4'>
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
-            onChange={(token) => {
-              setCaptchaToken(token);
-              setErrorMessage(null);
-            }}
-            onExpired={() => setCaptchaToken(null)}
-          />
-        </div>
+            <div // phone
+             data-aos='fade-up'  
+            >
+              <label 
+                htmlFor='phone' 
+                className='block text-sm/6 font-semibold text-white'>
+                Phone
+              </label>
+              <div className='mt-2.5'>
+                <div className='flex rounded-md bg-white/5 outline-1 -outline-offset-1 outline-white/10 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-white'>
+                  <input
+                    id='phone'
+                    name='phone'
+                    type='tel'
+                    placeholder='123-456-7890'
+                    required
+                    className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-1 focus:-outline-offset-2 focus:outline-white'
+                  />
+                </div>
+              </div>
+            </div>
+            <div 
+              data-aos='fade-up'
+              className='sm:col-span-2' // email  
+            >
+              <label 
+                htmlFor='email' 
+                className='block text-sm/6 font-semibold text-white'>
+                Email
+              </label>
+              <div className='mt-2.5'>
+                <input
+                  id='email'
+                  name='email'
+                  type='email'
+                  placeholder='Your email address'
+                  autoComplete='email'
+                  required
+                  className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-1 focus:-outline-offset-2 focus:outline-white'
+                />
+              </div>
+            </div>
+            <div 
+               data-aos='fade-up'
+              className='sm:col-span-2' // message  
+            >
+              <label 
+                htmlFor='message' 
+                className='block text-sm/6 font-semibold text-white'>
+                Message
+              </label>
+              <div className='mt-2.5'>
+                <textarea
+                  id='message'
+                  name='message'
+                  rows={4}
+                  defaultValue={''}
+                  placeholder='Briefly describe the scope including any relevant information.'
+                  required
+                  className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-1 focus:-outline-offset-2 focus:outline-white'
+                />
+              </div>
+            </div>
+            <div 
+               data-aos='fade-up'
+              className='sm:col-span-2' // upload file  
+            >
+              <label 
+                htmlFor='attachments' 
+                className='block text-sm/6 font-semibold text-white'>
+                Upload File (max 500KB)
+              </label>
+              <div className='mt-2.5'>
+                <input
+                  id='attachments'
+                  name='attachments'
+                  type='file'
+                  className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-1 focus:-outline-offset-2 focus:outline-white'
+                />
+              </div>
+            </div>
 
-        {errorMessage && (
-          <p className='mt-3 text-sm text-red-500'>
-            {errorMessage}
-          </p>
-        )}
-        <div className='mt-10'>
-          <button
-            type='submit'
-            disabled={status === 'loading' || !captchaToken}
-            className={getaQuote.style.cta}
+            {status === 'success' && ( // Status / feedback
+              <p className='text-sm text-teal'>
+                {/* Thanks — your message has been sent. We'll be in touch shortly. */}
+                {getaQuote.content.form.success}
+              </p>
+            )}
+            {status === 'error' && (
+              <p className='text-sm text-red-600'>
+                {/* Something went wrong sending your message. Please try again or email us directly. */}
+                {getaQuote.content.form.error}
+              </p>
+            )}
+        
+          </div>
+          <div 
+            data-aos='fade-up'
+            className='sm:col-span-2 mt-4' // Recaptcha  
           >
-            {status === 'loading' ? 'Sending…' : 'Send message'}
-          </button>
-        </div>
-      </form>
-    </div>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
+              onChange={(token) => {
+                setCaptchaToken(token);
+                setErrorMessage(null);
+              }}
+              onExpired={() => setCaptchaToken(null)}
+            />
+          </div>
+
+          {errorMessage && (
+            <p className='mt-3 text-sm text-red-500'>
+              {errorMessage}
+            </p>
+          )}
+          <div
+            data-aos='fade-up' 
+            className='mt-10'
+          >
+            <button
+              type='submit'
+              disabled={status === 'loading' || !captchaToken}
+              className={getaQuote.style.cta}
+            >
+              {status === 'loading' ? 'Sending…' : 'Send message'}
+            </button>
+          </div>
+        </form>
+        <div 
+          data-aos='fade-left'
+          className='flex mt-16 '>
+            <span className='sr-only'>melbourne Structural</span>
+                <img
+                  alt=''
+                  src='/images/favicon.svg'
+                  className='h-80 w-full'
+                />
+          </div>
+      </div>
+      </div>
+    </section>
   )
 }
