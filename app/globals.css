@@ -23,7 +23,7 @@
     @apply font-sans text-[16px] md:text-[18px] leading-relaxed text-charcoal bg-offwhite;
   }
   h1 {
-    @apply font-heading text-[2.5rem] md:text-[4.5rem] font-semibold leading-tight;
+    @apply font-heading text-[2rem] md:text-[4.5rem] font-semibold leading-tight;
   }
 
   h2 {
