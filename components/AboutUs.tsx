@@ -15,7 +15,7 @@ const aboutus = {
     title: `text-charcoal`,
     img: `h-48 w-80 m-auto object-contain white opacity-90 hover:grayscale-0 `,
     copy:`mt-8 text-charcoal`,
-    bg:`opacity-10 w-5/6 object-cover object-center lg:object-right motion-safe:animate-[bounce_45s_linear_infinite]`,
+    bg:`opacity-10 w-5/6 object-cover object-center lg:object-right animate-[bounce_45s_linear_infinite]`,
   }
 }
 
@@ -72,7 +72,7 @@ export default function AboutUs() {
           </div>
         </div>
        
-        <div className='-mt-12 -ml-12 p-0 lg:sticky lg:top-30 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden  motion-safe:animate-float'>
+        <div className='-mt-12 -ml-12 p-0 lg:sticky lg:top-30 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden animate-float'>
           <div className='-mt-12 p-12 lg:sticky lg:top-30 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden '>
             <div
               data-aos='fade-in'
@@ -97,7 +97,7 @@ export default function AboutUs() {
                 key={`curr-${currentIndex}`}
                 alt=''
                 src={items[currentIndex]}
-                className='absolute inset-0 h-full w-full object-cover z-20 drop-shadow-xl/50 motion-safe:animate-slide-left'
+                className='absolute inset-0 h-full w-full object-cover z-20 drop-shadow-xl/50 animate-slide-left'
               />
             </div>
           </div>
