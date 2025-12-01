@@ -11,6 +11,8 @@ export default function AOSInit() {
       easing: 'ease-out',  // easing
       offset: 40,         // distance from bottom before triggering
       delay: 100,
+      once: true,
+      disable: false,  
     });
   }, []);
 
