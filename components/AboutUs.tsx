@@ -88,13 +88,12 @@ export default function AboutUs() {
                 aspect-16/10'
             >
               <img
-                key={`prev-${prevIndex}`}
                 alt=''
                 src={items[prevIndex]}
                 className='absolute inset-0 h-full w-full object-cover z-10'
               />
               <img
-                key={`curr-${currentIndex}`}
+                key={currentIndex}
                 alt=''
                 src={items[currentIndex]}
                 className='absolute inset-0 h-full w-full object-cover z-20 drop-shadow-xl/50 animate-slide-left'
