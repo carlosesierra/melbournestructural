@@ -13,7 +13,7 @@
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
     "aos": "^2.3.4",
-    "next": "16.0.8",
+    "next": "16.0.7",
     "pnpm": "^10.23.0",
     "react": "19.2.1",
     "react-dom": "19.2.1",
