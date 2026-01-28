@@ -49,30 +49,44 @@ export default function GetAQuote() {
 
     setStatus('loading');
 
-    try {
-      await emailjs.sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
-        formRef.current,
-        {
-          publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-        }
-      );
+  try {
+    const verifyRes = await fetch('/api/recaptcha/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: captchaToken }),
+    });
 
-      setStatus('success');
-      formRef.current.reset();
-          setErrorMessage(null);
+    const verifyData = await verifyRes.json().catch(() => ({}));
 
-    if (!captchaToken) {
-      setErrorMessage(`Please confirm you're not a robot.`);
+    if (!verifyRes.ok || verifyData?.success !== true) {
+      setStatus('idle');
+      setErrorMessage(verifyData?.error ?? 'reCAPTCHA verification failed. Please try again.');
+      recaptchaRef.current?.reset();
+      setCaptchaToken(null);
       return;
     }
 
-    } catch (error) {
-      console.error('EmailJS error:', error);
-      setStatus('error');
-    }
-  };
+    // ✅ 2) If verification passes, send email (EmailJS)
+    await emailjs.sendForm(
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
+      formRef.current,
+      { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
+    );
+
+    setStatus('success');
+    formRef.current.reset();
+    setErrorMessage(null);
+    recaptchaRef.current?.reset();
+    setCaptchaToken(null);
+  } catch (error) {
+    console.error('Form submit error:', error);
+    setStatus('error');
+    setErrorMessage(getaQuote.content.form.error);
+    recaptchaRef.current?.reset();
+    setCaptchaToken(null);
+  }
+};
 
   return (
 
