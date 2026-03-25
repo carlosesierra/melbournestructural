@@ -1,8 +1,18 @@
 'use client';
 
-import { FormEvent, useRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import {
+  QUOTE_ATTACHMENT_ACCEPT,
+  QUOTE_ATTACHMENT_HELP_TEXT,
+  validateQuoteAttachment,
+} from '@/lib/get-a-quote';
+
+const submitTimeoutMs = (() => {
+  const parsed = Number(process.env.NEXT_PUBLIC_CONTACT_SUBMIT_TIMEOUT_MS ?? '15000');
+
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 15000;
+})();
 
 const getaQuote = {
   id:'getaquote',
@@ -30,63 +40,108 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
 export default function GetAQuote() {
 
   const formRef = useRef<HTMLFormElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
   const [status, setStatus] = useState<Status>('idle');
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+
+  const resetFeedback = () => {
+    if (status !== 'idle') {
+      setStatus('idle');
+    }
+
+    if (feedbackMessage) {
+      setFeedbackMessage(null);
+    }
+  };
+
+  const handleAttachmentChange = (event: ChangeEvent<HTMLInputElement>) => {
+    resetFeedback();
+
+    const [file] = Array.from(event.currentTarget.files ?? []);
+    const result = validateQuoteAttachment(file ?? null);
+
+    if (!result.error) {
+      return;
+    }
+
+    event.currentTarget.value = '';
+    setStatus('error');
+    setFeedbackMessage(result.error);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErrorMessage(null);
+    setFeedbackMessage(null);
 
     if (!captchaToken) {
-      setErrorMessage(`Please confirm you're not a robot.`);
+      setStatus('error');
+      setFeedbackMessage(`Please confirm you're not a robot.`);
       return;
     }
 
     if (!formRef.current) return;
 
-    setStatus('loading');
+    const attachmentResult = validateQuoteAttachment(
+      fileInputRef.current?.files?.[0] ?? null
+    );
 
-  try {
-    const verifyRes = await fetch('/api/recaptcha/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: captchaToken }),
-    });
-
-    const verifyData = await verifyRes.json().catch(() => ({}));
-
-    if (!verifyRes.ok || verifyData?.success !== true) {
-      setStatus('idle');
-      setErrorMessage(verifyData?.error ?? 'reCAPTCHA verification failed. Please try again.');
-      recaptchaRef.current?.reset();
-      setCaptchaToken(null);
+    if (attachmentResult.error) {
+      setStatus('error');
+      setFeedbackMessage(attachmentResult.error);
       return;
     }
 
-    // ✅ 2) If verification passes, send email (EmailJS)
-    await emailjs.sendForm(
-      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
-      formRef.current,
-      { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }
-    );
+    setStatus('loading');
+    const submitAbortController = new AbortController();
+    const submitTimeoutId = window.setTimeout(() => {
+      submitAbortController.abort();
+    }, submitTimeoutMs);
 
-    setStatus('success');
-    formRef.current.reset();
-    setErrorMessage(null);
-    recaptchaRef.current?.reset();
-    setCaptchaToken(null);
-  } catch (error) {
-    console.error('Form submit error:', error);
-    setStatus('error');
-    setErrorMessage(getaQuote.content.form.error);
-    recaptchaRef.current?.reset();
-    setCaptchaToken(null);
-  }
-};
+    try {
+      const formData = new FormData(formRef.current);
+      formData.set('captchaToken', captchaToken);
+
+      const response = await fetch('/api/get-a-quote', {
+        method: 'POST',
+        signal: submitAbortController.signal,
+        body: formData,
+      });
+
+      const responseData = (await response.json().catch(() => null)) as
+        | { error?: string; success?: boolean }
+        | null;
+
+      if (!response.ok || responseData?.success !== true) {
+        setStatus('error');
+        setFeedbackMessage(responseData?.error ?? getaQuote.content.form.error);
+        recaptchaRef.current?.reset();
+        setCaptchaToken(null);
+        return;
+      }
+
+      setStatus('success');
+      setFeedbackMessage(getaQuote.content.form.success);
+      formRef.current.reset();
+      recaptchaRef.current?.reset();
+      setCaptchaToken(null);
+    } catch (error) {
+      console.error('Form submit error:', error);
+      setStatus('error');
+      if (error instanceof Error && error.name === 'AbortError') {
+        setFeedbackMessage('Request timed out. Please try again.');
+      } else {
+        setFeedbackMessage(getaQuote.content.form.error);
+      }
+      recaptchaRef.current?.reset();
+      setCaptchaToken(null);
+    } finally {
+      window.clearTimeout(submitTimeoutId);
+      submitAbortController.abort();
+    }
+  };
 
   return (
 
@@ -121,7 +176,8 @@ export default function GetAQuote() {
                   id='name'
                   name='name'
                   type='text'
-                    placeholder='Your name'
+                  onChange={resetFeedback}
+                  placeholder='Your name'
                   autoComplete='name'
                   required
                   className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-1 focus:-outline-offset-2 focus:outline-white'
@@ -140,11 +196,14 @@ export default function GetAQuote() {
               <div className='mt-2.5'>
                 <div className='flex rounded-md bg-white/5 outline-1 -outline-offset-1 outline-white/10 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-white'>
                   <input
-                    id='phone'
-                    name='phone'
-                    type='tel'
-                    placeholder='123-456-7890'
-                    required
+                  id='phone'
+                  name='phone'
+                  type='tel'
+                  onChange={resetFeedback}
+                  autoComplete='tel'
+                  inputMode='tel'
+                  placeholder='123-456-7890'
+                  required
                     className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-1 focus:-outline-offset-2 focus:outline-white'
                   />
                 </div>
@@ -164,6 +223,7 @@ export default function GetAQuote() {
                   id='email'
                   name='email'
                   type='email'
+                  onChange={resetFeedback}
                   placeholder='Your email address'
                   autoComplete='email'
                   required
@@ -185,6 +245,7 @@ export default function GetAQuote() {
                   id='message'
                   name='message'
                   rows={4}
+                  onChange={resetFeedback}
                   defaultValue={''}
                   placeholder='Briefly describe the scope including any relevant information.'
                   required
@@ -206,23 +267,30 @@ export default function GetAQuote() {
                   id='attachments'
                   name='attachments'
                   type='file'
+                  ref={fileInputRef}
+                  accept={QUOTE_ATTACHMENT_ACCEPT}
+                  onChange={handleAttachmentChange}
+                  aria-describedby='attachments-help'
                   className='block w-full rounded-md bg-white/5 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-1 focus:-outline-offset-2 focus:outline-white'
                 />
+                <p
+                  id='attachments-help'
+                  className='mt-2 text-sm text-white/70'
+                >
+                  {QUOTE_ATTACHMENT_HELP_TEXT}
+                </p>
               </div>
             </div>
-
-            {status === 'success' && ( // Status / feedback
-              <p className='text-sm text-teal'>
-                {/* Thanks — your message has been sent. We'll be in touch shortly. */}
-                {getaQuote.content.form.success}
-              </p>
-            )}
-            {status === 'error' && (
-              <p className='text-sm text-red-600'>
-                {/* Something went wrong sending your message. Please try again or email us directly. */}
-                {getaQuote.content.form.error}
-              </p>
-            )}
+            <label className='sr-only' aria-hidden='true'>
+              Website
+              <input
+                type='text'
+                name='website'
+                tabIndex={-1}
+                autoComplete='off'
+                onChange={resetFeedback}
+              />
+            </label>
         
           </div>
           <div 
@@ -234,15 +302,26 @@ export default function GetAQuote() {
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
               onChange={(token) => {
                 setCaptchaToken(token);
-                setErrorMessage(null);
+                setFeedbackMessage(null);
+                if (status === 'error') {
+                  setStatus('idle');
+                }
               }}
-              onExpired={() => setCaptchaToken(null)}
+              onExpired={() => {
+                setCaptchaToken(null);
+                setStatus('error');
+                setFeedbackMessage('reCAPTCHA expired. Please confirm it again.');
+              }}
             />
           </div>
 
-          {errorMessage && (
-            <p className='mt-3 text-sm text-red-500'>
-              {errorMessage}
+          {feedbackMessage && (
+            <p
+              className={`mt-3 text-sm ${status === 'success' ? 'text-teal' : 'text-red-500'}`}
+              role='status'
+              aria-live='polite'
+            >
+              {feedbackMessage}
             </p>
           )}
           <div
@@ -251,7 +330,8 @@ export default function GetAQuote() {
           >
             <button
               type='submit'
-              disabled={status === 'loading' || !captchaToken}
+              disabled={status === 'loading'}
+              aria-busy={status === 'loading'}
               className={getaQuote.style.cta}
             >
               {status === 'loading' ? 'Sending…' : 'Send message'}

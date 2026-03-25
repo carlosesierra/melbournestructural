@@ -21,7 +21,7 @@ const items = [
 
 { name: 'Address', copy:`65 Newlands Road, Coburg North VIC 3058`, href:`https://share.google/MR7vOysqMnK05a3At` },
 { name: 'Phone', copy:`0458 876 290`, href:`tel:+61458876290` },
-{ name: 'Email', copy:`info@structuralmelbourne.com.au`, href:`mailto:info@structuralmelbourne.com.au` },
+{ name: 'Email', copy:`info@melbournestructural.com.au`, href:`mailto:info@melbournestructural.com.au` },
 
 ]
 
