@@ -185,33 +185,39 @@ export async function sendQuoteEmail(payload: QuoteMailPayload) {
   const transporter = getTransporter(config);
   const recipient = getQuoteRecipient();
   const envelopeRecipients = splitRecipientList(recipient);
-  const subject = `Website enquiry from ${payload.name}`;
-  const originLine = payload.origin ? `Submitted from: ${payload.origin}` : null;
+  const subject = 'Enquiry from melbournestructural.com.au webform';
+  const originLine = payload.origin
+    ? `Submitted from: ${payload.origin} webform`
+    : null;
   const textBody = [
-    'New website enquiry',
+    'Enquiry from melbournestructural.com.au webform',
     '',
     `Name: ${payload.name}`,
+    '',
     `Phone: ${payload.phone}`,
+    '',
     `Email: ${payload.email}`,
-    originLine,
     '',
     'Message:',
+    '',
     payload.message,
+    '',
+    originLine,
   ]
     .filter(Boolean)
     .join('\n');
   const htmlBody = `
-    <h2>New website enquiry</h2>
+    <h2>Enquiry from melbournestructural.com.au webform</h2>
     <p><strong>Name:</strong> ${escapeHtml(payload.name)}</p>
     <p><strong>Phone:</strong> ${escapeHtml(payload.phone)}</p>
     <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
-    ${
-      payload.origin
-        ? `<p><strong>Submitted from:</strong> ${escapeHtml(payload.origin)}</p>`
-        : ''
-    }
     <p><strong>Message:</strong></p>
     <p>${formatMultilineHtml(payload.message)}</p>
+    ${
+      payload.origin
+        ? `<p><strong>Submitted from:</strong> ${escapeHtml(payload.origin)} webform</p>`
+        : ''
+    }
   `;
 
   await transporter.sendMail({
