@@ -24,7 +24,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 The quote form posts multipart `FormData` to `app/api/get-a-quote/route.ts`, preserves file uploads, verifies reCAPTCHA server-side, rate limits requests, and sends mail from the server with Nodemailer.
 
-For production on Vercel with Google Workspace SMTP relay, configure Vercel Static IPs and allowlist those IPs in Google Workspace SMTP relay before enabling the form.
+Recommended on Vercel: use authenticated Gmail SMTP with a real Google Workspace mailbox. This avoids Vercel Static IPs and works with the current Nodemailer setup.
 
 Required environment variables:
 
@@ -37,10 +37,12 @@ RECAPTCHA_API_KEY=
 RECAPTCHA_MIN_SCORE=0.5
 RECAPTCHA_VERIFY_TIMEOUT_MS=10000
 
-SMTP_HOST=smtp-relay.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_SECURE=true
 SMTP_REQUIRE_TLS=true
+SMTP_USER=info@soiltestmelbourne.com.au
+SMTP_PASS=
 SMTP_NAME=soiltestmelbourne.com.au
 SMTP_FROM="Melbourne Structural Website <info@soiltestmelbourne.com.au>"
 SMTP_TO=info@melbournestructural.com.au
@@ -53,8 +55,6 @@ Optional environment variables:
 RECAPTCHA_ACTION=
 RECAPTCHA_ALLOWED_HOSTNAMES=www.melbournestructural.com.au,melbournestructural.com.au,localhost
 
-SMTP_USER=
-SMTP_PASS=
 SMTP_ENVELOPE_FROM=info@soiltestmelbourne.com.au
 
 FORM_FROM=info@soiltestmelbourne.com.au
@@ -76,14 +76,16 @@ Notes:
 
 - This repo keeps the existing multipart upload flow and checkbox reCAPTCHA, so unlike `structural-assessments` it stays on the Enterprise assessment API instead of the `siteverify` secret-key flow.
 - `SMTP_FROM` and `SMTP_TO` are now the preferred mail env names to match the reference repo more closely. `FORM_FROM` and `FORM_TO` still work as fallbacks.
+- When `SMTP_HOST=smtp.gmail.com`, `SMTP_USER` and `SMTP_PASS` are required.
+- For Google Workspace on `smtp.gmail.com`, `SMTP_PASS` should be an app password for the mailbox in `SMTP_USER`.
 - `SMTP_TO` can be the Google Workspace alias `info@melbournestructural.com.au` if that alias routes to `info@soiltestmelbourne.com.au`.
-- `SMTP_FROM` should be a real Google Workspace mailbox that your SMTP relay policy allows as a sender.
+- `SMTP_FROM` should normally be the same mailbox as `SMTP_USER`, or a send-as alias already configured on that mailbox.
 - If `SMTP_NAME` is omitted, the app defaults it to the domain part of the sender address extracted from `SMTP_FROM` or `FORM_FROM`.
 - If `FORM_PREVIEW_TO` is set, Vercel preview deployments send mail to that address instead of the production inbox.
 - If `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are not set, the API falls back to in-memory rate limiting.
 - `NEXT_ALLOWED_DEV_ORIGINS` maps to Next.js `allowedDevOrigins` for local network dev access.
-- The route is pinned to the `syd1` Vercel region to keep relay traffic predictable.
-- Local development uses your current machine's public IP, not Vercel. With IP-allowlisted Google SMTP relay, local sends fail unless you temporarily allowlist your current public IP in Workspace.
+- The route is pinned to the `syd1` Vercel region, but the authenticated Gmail SMTP path does not require Vercel Static IPs.
+- If you later switch back to `smtp-relay.gmail.com`, you will need Google Workspace SMTP relay allowlisting and stable outbound IPs such as Vercel Static IPs.
 
 ## Learn More
 

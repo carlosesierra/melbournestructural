@@ -13,11 +13,13 @@ const MAX_MESSAGE_LENGTH = 5000;
 const MAX_NAME_LENGTH = 120;
 const MAX_PHONE_LENGTH = 40;
 const EMAIL_CONFIGURATION_ERROR =
-  'Server email settings are not configured. Set the SMTP relay and form mailbox env vars in Vercel before sending mail.';
+  'Server email settings are not configured. Set the SMTP and form mailbox env vars in Vercel before sending mail.';
 const EMAIL_DELIVERY_ERROR =
   'Something went wrong sending your message. Please try again or email us directly.';
 const SMTP_RELAY_DENIED_ERROR =
   'Google Workspace SMTP relay denied the sending server. Allowlist the sending IP in Workspace SMTP relay settings and ensure SMTP_FROM and SMTP_NAME use your Workspace domain.';
+const GMAIL_SMTP_AUTH_ERROR =
+  'Google SMTP rejected the mailbox login. Set SMTP_HOST to smtp.gmail.com and provide SMTP_USER plus a valid Google app password in SMTP_PASS.';
 
 type MailSendError = Error & {
   code?: string;
@@ -86,6 +88,10 @@ function parsePositiveInteger(value: string | undefined, fallback: number): numb
 function parsePositiveNumber(value: string | undefined, fallback: number): number {
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function getConfiguredSmtpHost() {
+  return trimString(process.env.SMTP_HOST).toLowerCase();
 }
 
 function getTrimmedField(formData: FormData, fieldName: string) {
@@ -512,7 +518,7 @@ export async function POST(req: NextRequest) {
       });
     } catch (error) {
       const mailError = error as MailSendError;
-      console.error('SMTP relay send failed', {
+      console.error('SMTP send failed', {
         message: mailError.message,
         code: mailError.code,
         command: mailError.command,
@@ -536,10 +542,19 @@ export async function POST(req: NextRequest) {
         errorMessage.includes('Missing required env var') ||
         errorMessage.includes('SMTP_PORT must be a valid number') ||
         errorMessage.includes('SMTP_USER and SMTP_PASS must be set together') ||
+        errorMessage.includes('SMTP_USER and SMTP_PASS are required when SMTP_HOST is smtp.gmail.com') ||
         errorMessage.includes('SMTP_NAME is required');
+      const smtpHost = getConfiguredSmtpHost();
       const isRelayDenied =
         errorMessage.includes('Mail relay denied') ||
         errorMessage.includes('Invalid credentials for relay');
+      const isGmailAuthError =
+        (mailError.code === 'EAUTH' && smtpHost === 'smtp.gmail.com') ||
+        errorMessage.includes('Username and Password not accepted') ||
+        errorMessage.includes('Invalid login') ||
+        errorMessage.includes('Application-specific password required') ||
+        errorMessage.includes('534-5.7.9') ||
+        errorMessage.includes('535-5.7.8');
 
       return NextResponse.json(
         {
@@ -548,9 +563,14 @@ export async function POST(req: NextRequest) {
             ? EMAIL_CONFIGURATION_ERROR
             : isRelayDenied
               ? SMTP_RELAY_DENIED_ERROR
+              : isGmailAuthError
+                ? GMAIL_SMTP_AUTH_ERROR
               : EMAIL_DELIVERY_ERROR,
         },
-        { status: isMissingConfiguration || isRelayDenied ? 500 : 502 }
+        {
+          status:
+            isMissingConfiguration || isRelayDenied || isGmailAuthError ? 500 : 502,
+        }
       );
     }
 

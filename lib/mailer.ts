@@ -39,6 +39,10 @@ function getDomainFromEmail(address: string) {
   return domain.trim().toLowerCase();
 }
 
+function isGmailSmtpHost(host: string) {
+  return host.trim().toLowerCase() === 'smtp.gmail.com';
+}
+
 function getAddressFromMailbox(value: string) {
   const match = value.match(/<([^>]+)>/);
   return (match?.[1] ?? value).trim().replace(/^"|"$/g, '');
@@ -74,6 +78,7 @@ function getRequiredEnv(name: string) {
 }
 
 function getMailConfig(): MailConfig {
+  const host = getRequiredEnv('SMTP_HOST');
   const port = Number(process.env.SMTP_PORT ?? '587');
 
   if (Number.isNaN(port)) {
@@ -85,6 +90,10 @@ function getMailConfig(): MailConfig {
 
   if ((user && !pass) || (!user && pass)) {
     throw new Error('SMTP_USER and SMTP_PASS must be set together');
+  }
+
+  if (isGmailSmtpHost(host) && (!user || !pass)) {
+    throw new Error('SMTP_USER and SMTP_PASS are required when SMTP_HOST is smtp.gmail.com');
   }
 
   const configuredFrom =
@@ -114,7 +123,7 @@ function getMailConfig(): MailConfig {
     fromHeader:
       getOptionalEnv('SMTP_FROM') ??
       `"${getOptionalEnv('FORM_SENDER_NAME') ?? 'Melbourne Structural Website'}" <${fromAddress}>`,
-    host: getRequiredEnv('SMTP_HOST'),
+    host,
     pass,
     port,
     previewTo: getOptionalEnv('FORM_PREVIEW_TO'),
