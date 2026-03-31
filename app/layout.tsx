@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Open_Sans, Montserrat } from 'next/font/google';
 import './globals.css';
 import AOSInit from '@/components/AosInit';
@@ -35,6 +36,18 @@ export default function RootLayout({
       className={`${openSans.variable} ${montserrat.variable} data-scroll-behavior='smooth'`}
     >
       <body className='font-sans bg-offwhite text-charcoal'>
+        <Script
+          src='https://www.googletagmanager.com/gtag/js?id=AW-16495957113'
+          strategy='afterInteractive'
+        />
+        <Script id='google-ads-gtag' strategy='afterInteractive'>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-16495957113');
+          `}
+        </Script>
         <AOSInit />
         <Navigation />
         <main>
