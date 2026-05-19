@@ -9,7 +9,7 @@ const home = {
   content:{
     title: 'Practical structural engineering for builds all around Victoria.',
     subtitle: 'We help builders, architects and owners deliver safe, compliant residential and small commercial structures across Melbourne, Geelong, Bendigo and Ballarat.',
-    video:`/video/hero.mp4`,
+    video:`/video/hero.webm`,
     poster:`/video/hero-bg.jpg`,
     cta1: 
       { copy:'Get a Quote',

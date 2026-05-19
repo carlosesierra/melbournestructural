@@ -28,7 +28,7 @@ const items = [
   },
   { title: 'Structural design',
     copy: 'Residential, commercial and industrial structural design, computations and certification for new builds, extensions and alterations.',
-    video: '/video/video-02.mp4', 
+    video: '/video/video-02.webm', 
     poster: '/video/video-02.png',
   },
   { title: 'Forensic engineering',
@@ -38,7 +38,7 @@ const items = [
   },
   { title: 'Environmental engineering',
     copy: 'Contamination and soil testing for council permits and waste removal, with practical advice for builders and owners.',
-    video: '/video/video-04.mp4', 
+    video: '/video/video-04.webm', 
     poster: '/video/video-04.jpg',
   },
 ]
