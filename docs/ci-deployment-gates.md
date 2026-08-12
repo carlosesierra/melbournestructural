@@ -8,7 +8,7 @@ The `CI` workflow runs for pull requests, pushes to `main`, and manual dispatche
 - ESLint errors;
 - TypeScript errors;
 - test failures;
-- critical production dependency vulnerabilities;
+- high or critical production dependency vulnerabilities;
 - production build failures;
 - rendered homepage SEO invariant failures; and
 - Lighthouse SEO, FCP, Speed Index, CLS, and transfer-budget failures.
@@ -34,7 +34,7 @@ Run the same gates locally after a production build:
 pnpm lint
 pnpm typecheck
 pnpm test
-pnpm audit --prod --audit-level critical
+pnpm audit --prod --audit-level high
 pnpm build
 pnpm check:seo
 pnpm check:lighthouse
@@ -61,11 +61,13 @@ Keep `main` as the Vercel production branch. With the GitHub ruleset above, only
 
 Preview deployments may still be created before CI completes. They are intentionally emitted with `noindex` and a site-wide robots disallow. Production emits `index, follow`, the canonical URL, and a crawlable robots file.
 
-## Planned gate tightening
+## Gate status and planned tightening
 
-Two thresholds are intentionally transitional:
+The dependency-security work package removed the known high findings, so the
+production dependency audit now blocks both `high` and `critical` findings.
 
-- The dependency audit blocks `critical` findings. Raise it to `high` after the dependency-security work package removes the known high findings.
+One threshold remains intentionally transitional:
+
 - The current animated/video hero produces `NO_LCP` in local Lighthouse traces. The gate currently enforces SEO score, FCP, Speed Index, CLS, and a 32 MB transfer ceiling. After the hero optimization work package restores a measurable LCP, add an LCP limit of 2,500 ms and reduce the transfer ceiling.
 
 Intentional changes to the homepage title, description, H1, canonical, or required content must update `scripts/seo-gates.mjs` and its tests in the same reviewed pull request.

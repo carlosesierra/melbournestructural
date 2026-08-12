@@ -6,7 +6,6 @@ import {
 import { sendQuoteEmail } from '@/lib/mailer';
 
 export const runtime = 'nodejs';
-export const preferredRegion = 'syd1';
 
 const MAX_EMAIL_LENGTH = 254;
 const MAX_MESSAGE_LENGTH = 5000;
