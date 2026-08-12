@@ -144,7 +144,7 @@ Notes:
 - If `FORM_PREVIEW_TO` is set, Vercel preview deployments send mail to that address instead of the production inbox.
 - If `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are not set, the API falls back to in-memory rate limiting.
 - `NEXT_ALLOWED_DEV_ORIGINS` maps to Next.js `allowedDevOrigins` for local network dev access.
-- The route is pinned to the `syd1` Vercel region, but the authenticated Gmail SMTP path does not require Vercel Static IPs.
+- `vercel.json` pins the project's dynamic functions to the `syd1` Vercel region, but the authenticated Gmail SMTP path does not require Vercel Static IPs.
 - If you later switch back to `smtp-relay.gmail.com`, you will need Google Workspace SMTP relay allowlisting and stable outbound IPs such as Vercel Static IPs.
 
 ## Learn More
