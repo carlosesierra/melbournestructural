@@ -5,6 +5,7 @@ import './globals.css';
 import AOSInit from '@/components/AosInit';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { SITE_URL } from '@/lib/site';
 
 const openSans = Open_Sans({
   subsets: ['latin'],
@@ -17,8 +18,26 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'Structural Civil Engineering - Structural Melbourne',
   description: 'Melbourne Structural provides structural and civil engineering services, designing innovative, economic & environmentally sustainable solutions.',
+  alternates: {
+    canonical: '/',
+  },
+  robots: process.env.VERCEL_ENV === 'preview'
+    ? {
+        index: false,
+        follow: false,
+      }
+    : {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-image-preview': 'large',
+        },
+      },
   icons: {
     icon: '/images/favicon.svg', // Relative path to your icon
     apple: '/images/favicon.svg', // For Apple devices
