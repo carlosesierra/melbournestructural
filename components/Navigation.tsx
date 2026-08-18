@@ -74,7 +74,7 @@ export default function TopMenu() {
 
   // Smart navigation: if on non-home page and clicking home-only sections, prepend '/'
   const getHref = (item: { name: string; href: string }) => {
-    const isHomeOnlySection = ['Services', 'Trusted By', 'About Us', 'Get A Quote', 'Contact Us'].includes(item.name);
+    const isHomeOnlySection = ['Home', 'Services', 'Trusted By', 'About Us', 'Get A Quote', 'Contact Us'].includes(item.name);
     const isHomePage = pathname === '/' || !pathname || pathname === '';
     
     if (isHomeOnlySection && !isHomePage && item.href.startsWith('#')) {
@@ -86,7 +86,7 @@ export default function TopMenu() {
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${ showBg ? 'bg-gray-900/80 md:bg-gray-900/80 md:backdrop-blur border-b border-white/10' : 'bg-transparent' }`}>
       <nav aria-label='Global' className='flex items-center justify-between p-6 lg:px-8' >
-        <div className='flex lg:flex-1' //logo
+        <div className='flex xl:flex-1' //logo
         >
             <Link 
             data-aos='fade-right'
@@ -100,7 +100,7 @@ export default function TopMenu() {
                 />
             </Link>
         </div>
-        <div className='flex lg:hidden'>
+        <div className='flex xl:hidden'>
             <button
             type='button'
             onClick={() => setMobileMenuOpen(true)}
@@ -110,7 +110,7 @@ export default function TopMenu() {
             <Bars3Icon aria-hidden='true' className='size-6' />
             </button>
         </div>
-        <div className='hidden lg:flex lg:gap-x-12'>
+        <div className='hidden xl:flex xl:gap-x-8'>
             {items.map((item) => (
               <Link 
                 data-aos='fade-down'
@@ -121,7 +121,7 @@ export default function TopMenu() {
               </Link>
             ))}
         </div>
-        <div className='hidden lg:flex lg:flex-1 lg:justify-end'>
+        <div className='hidden xl:flex xl:flex-1 xl:justify-end'>
             <Link 
               data-aos='fade-left'
               href={navigation.content.phone.href}
@@ -131,7 +131,7 @@ export default function TopMenu() {
             </Link>
         </div>
       </nav>
-      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className='lg:hidden' //Backdrop with fade
+      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className='xl:hidden' //Backdrop with fade
       >
         <div
           aria-hidden='true'

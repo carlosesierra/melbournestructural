@@ -42,7 +42,7 @@ const items = [
     poster: '/video/video-04.png',
   },
   { title: 'Bridge Inspection Services',
-    copy: <>Keeping Australia's Bridges Safe, Compliant and Standing the Test of Time</>,
+    copy: <>Engineering expertise, not just inspection checklists. Every inspection is backed by genuine structural and geotechnical engineering judgement.</>,
     video: 'https://melbournestructural.s3.us-east-1.amazonaws.com/video-bridge.webm', 
     poster: '/video/video-bridge.png',
   },
