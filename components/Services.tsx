@@ -41,6 +41,11 @@ const items = [
     video: 'https://melbournestructural.s3.us-east-1.amazonaws.com/video-04.webm', 
     poster: '/video/video-04.png',
   },
+  { title: 'Bridge Inspection Services',
+    copy: <>Keeping Australia's Bridges Safe, Compliant and Standing the Test of Time</>,
+    video: 'https://melbournestructural.s3.us-east-1.amazonaws.com/video-bridge.webm', 
+    poster: '/video/video-bridge.png',
+  },
 ]
 
 
