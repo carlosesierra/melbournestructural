@@ -29,6 +29,7 @@ const items = [
   { name: 'Home', href: '#home' },
   { name: 'Services', href: '#services' },
   { name: 'Trusted By', href: '#trustedby' },
+  { name: 'Bridge Inspection', href: '/bridge-inspection-services' },
   { name: 'About Us', href: '#aboutus' },
   { name: 'Get A Quote', href: '#getaquote' },
   { name: 'Contact Us', href: '#contactus' },
