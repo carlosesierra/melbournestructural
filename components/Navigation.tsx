@@ -72,6 +72,17 @@ export default function TopMenu() {
   const isBridgePage = pathname?.includes('bridge-inspection-services');
   const showBg = contextForceBackground || isBridgePage || isScrolled;
 
+  // Smart navigation: if on non-home page and clicking home-only sections, prepend '/'
+  const getHref = (item: { name: string; href: string }) => {
+    const isHomeOnlySection = ['Services', 'Trusted By', 'About Us', 'Get A Quote', 'Contact Us'].includes(item.name);
+    const isHomePage = pathname === '/' || !pathname || pathname === '';
+    
+    if (isHomeOnlySection && !isHomePage && item.href.startsWith('#')) {
+      return `/${item.href}`;
+    }
+    return item.href;
+  };
+
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${ showBg ? 'bg-gray-900/80 md:bg-gray-900/80 md:backdrop-blur border-b border-white/10' : 'bg-transparent' }`}>
       <nav aria-label='Global' className='flex items-center justify-between p-6 lg:px-8' >
@@ -104,7 +115,7 @@ export default function TopMenu() {
               <Link 
                 data-aos='fade-down'
                 key={item.name} 
-                href={item.href} 
+                href={getHref(item)} 
                 className={navigation.style.links}>
                 {item.name}
               </Link>
@@ -157,7 +168,7 @@ export default function TopMenu() {
                 {items.map((item) => (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={getHref(item)}
                     onClick={closeMobileMenu}
                     className={navigation.style.linksmob}
                   >
