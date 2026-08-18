@@ -17,6 +17,7 @@ type Props = {
   copy: ReactNode;
   bg?: string;
   images?: string[];
+  intervalMs?: number; // time between image transitions in ms
   styleOverrides?: StyleOverrides;
 }
 
@@ -36,6 +37,7 @@ export default function InfoSection({
   copy,
   bg = 'images/blueprint.svg',
   images = [],
+  intervalMs = 3000,
   styleOverrides = {},
 }: Props) {
   const items = images && images.length ? images : defaultItems;
@@ -46,10 +48,10 @@ export default function InfoSection({
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % items.length);
-    }, 2000);
+    }, intervalMs);
 
     return () => clearInterval(interval);
-  }, [items.length]);
+  }, [items.length, intervalMs]);
 
   const prevIndex = (currentIndex - 1 + items.length) % items.length;
 

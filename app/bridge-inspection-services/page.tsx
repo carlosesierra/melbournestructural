@@ -25,8 +25,24 @@ const bridgeContent = {
     </>
   ),
   bg: 'images/blueprint.svg',
-  images: ['/images/about-01.jpg', '/images/about-02.jpg', '/images/about-03.jpg'],
+  images: ['/images/bridge-01.svg', '/images/bridge-02.svg', '/images/bridge-03.svg'],
 };
+
+export default function Page() {
+  return (
+    <div>
+      <InfoSection
+        id={bridgeContent.id}
+        pretitle={bridgeContent.pretitle}
+        title={bridgeContent.title}
+        copy={bridgeContent.copy}
+        bg={bridgeContent.bg}
+        images={bridgeContent.images}
+        intervalMs={3500}
+      />
+    </div>
+  );
+}
 
 export default function Page() {
   return (
