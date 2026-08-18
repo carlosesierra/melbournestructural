@@ -44,17 +44,3 @@ export default function Page() {
   );
 }
 
-export default function Page() {
-  return (
-    <div>
-      <InfoSection
-        id={bridgeContent.id}
-        pretitle={bridgeContent.pretitle}
-        title={bridgeContent.title}
-        copy={bridgeContent.copy}
-        bg={bridgeContent.bg}
-        images={bridgeContent.images}
-      />
-    </div>
-  );
-}
