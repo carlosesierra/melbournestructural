@@ -60,13 +60,14 @@ function useScrolled(threshold = 40) {
   return isScrolled;
 }
 
-export default function TopMenu() {
+export default function TopMenu({ forceBackground = false }: { forceBackground?: boolean }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isScrolled = useScrolled(40);
   const closeMobileMenu = () => setMobileMenuOpen(false);
+  const showBg = forceBackground || isScrolled;
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${ isScrolled ? 'bg-gray-900/80 md:bg-gray-900/80 md:backdrop-blur border-b border-white/10' : 'bg-transparent' }`}>
+    <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${ showBg ? 'bg-gray-900/80 md:bg-gray-900/80 md:backdrop-blur border-b border-white/10' : 'bg-transparent' }`}>
       <nav aria-label='Global' className='flex items-center justify-between p-6 lg:px-8' >
         <div className='flex lg:flex-1' //logo
         >
