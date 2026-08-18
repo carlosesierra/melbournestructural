@@ -41,6 +41,11 @@ const items = [
     video: 'https://melbournestructural.s3.us-east-1.amazonaws.com/video-04.webm', 
     poster: '/video/video-04.png',
   },
+  { title: 'Bridge Inspection Services',
+    copy: <>Engineering expertise, not just inspection checklists. Every inspection is backed by genuine structural and geotechnical engineering judgement.</>,
+    video: 'https://melbournestructural.s3.us-east-1.amazonaws.com/video-bridge.webm', 
+    poster: '/video/video-bridge.png',
+  },
 ]
 
 
