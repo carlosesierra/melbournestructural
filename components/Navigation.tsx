@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
+import { useNavContext } from './NavContext';
 
 const navigation = {
   content:{
@@ -60,9 +61,10 @@ function useScrolled(threshold = 40) {
   return isScrolled;
 }
 
-export default function TopMenu({ forceBackground = false }: { forceBackground?: boolean }) {
+export default function TopMenu() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isScrolled = useScrolled(40);
+  const { forceBackground } = useNavContext();
   const closeMobileMenu = () => setMobileMenuOpen(false);
   const showBg = forceBackground || isScrolled;
 

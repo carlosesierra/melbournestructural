@@ -1,5 +1,4 @@
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { NavProvider } from '@/components/NavContext';
 
 export default function BridgeLayout({
   children,
@@ -7,10 +6,8 @@ export default function BridgeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Navigation forceBackground={true} />
-      <main>{children}</main>
-      <Footer />
-    </>
+    <NavProvider forceBackground={true}>
+      {children}
+    </NavProvider>
   );
 }
