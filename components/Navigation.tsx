@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
@@ -64,9 +65,12 @@ function useScrolled(threshold = 40) {
 export default function TopMenu() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isScrolled = useScrolled(40);
-  const { forceBackground } = useNavContext();
+  const { forceBackground: contextForceBackground } = useNavContext();
+  const pathname = usePathname();
   const closeMobileMenu = () => setMobileMenuOpen(false);
-  const showBg = forceBackground || isScrolled;
+  
+  const isBridgePage = pathname?.includes('bridge-inspection-services');
+  const showBg = contextForceBackground || isBridgePage || isScrolled;
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${ showBg ? 'bg-gray-900/80 md:bg-gray-900/80 md:backdrop-blur border-b border-white/10' : 'bg-transparent' }`}>
