@@ -5,6 +5,7 @@ import './globals.css';
 import AOSInit from '@/components/AosInit';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { NavProvider } from '@/components/NavContext';
 import { SITE_URL } from '@/lib/site';
 
 const openSans = Open_Sans({
@@ -68,11 +69,13 @@ export default function RootLayout({
           `}
         </Script>
         <AOSInit />
-        <Navigation />
-        <main>
-          {children}
-        </main>
-        <Footer />
+        <NavProvider>
+          <Navigation />
+          <main>
+            {children}
+          </main>
+          <Footer />
+        </NavProvider>
       </body>
     </html>
   );
