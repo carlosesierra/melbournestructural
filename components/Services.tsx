@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Image from 'next/image';
 
 const services = {
   id:`services`,
@@ -24,27 +24,27 @@ const items = [
   { title: 'Geotechnical engineering',
     copy: 'Site classifications, basements, commercial developments and infrastructure. Our Chartered geotechnical engineers can carry out the investigations and reporting your project requires.',
     video: '', 
-    poster: '/images/services-01.png', 
+    poster: '/images/services-geotechnical.webp', 
   },
   { title: 'Structural design',
     copy: 'Residential, commercial and industrial structural design, computations and certification for new builds, extensions and alterations.',
-    video: 'https://melbournestructural.s3.us-east-1.amazonaws.com/video-02.webm', 
-    poster: '/video/video-02.png',
+    video: '/video/video-design.webm', 
+    poster: '/images/services-design.webp',
   },
   { title: 'Forensic engineering',
     copy: 'Investigation of damaged structures using non-destructive testing (such as GPR) and destructive testing (core samples, footing exposures, lab testing) with clear repair recommendations.',
     video: '', 
-    poster: '/images/services-03.jpg',
+    poster: '/images/services-forensic.webp',
   },
   { title: 'Environmental engineering',
     copy: 'Contamination and soil testing for council permits and waste removal, with practical advice for builders and owners.',
-    video: 'https://melbournestructural.s3.us-east-1.amazonaws.com/video-04.webm', 
-    poster: '/video/video-04.png',
+    video: '/video/video-environmental.webm', 
+    poster: '/images/services-environmental.webp',
   },
   { title: 'Bridge Inspection Services',
     copy: <>Engineering expertise, not just inspection checklists. Every inspection is backed by genuine structural and geotechnical engineering judgement.</>,
-    video: 'https://melbournestructural.s3.us-east-1.amazonaws.com/video-bridge.webm', 
-    poster: '/video/video-bridge.png',
+    video: '/video/video-bridge.webm', 
+    poster: '/images/services-bridge.webp',
   },
 ]
 
@@ -92,11 +92,12 @@ export default function Services() {
                         Your browser does not support the video tag.
                       </video>
                       ) : item.poster ? (
-                        <img
+                        <Image
                           alt={item.title}
                           src={item.poster}
+                          fill
+                          sizes='(max-width: 768px) 100vw, 50vw'
                           className={services.style.poster}
-                          loading='lazy'
                         />
                       ) : null}
                     </div>

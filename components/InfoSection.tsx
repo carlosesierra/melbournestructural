@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image';
 import { useEffect, useState, ReactNode } from 'react';
 
 type StyleOverrides = {
@@ -22,12 +23,12 @@ type Props = {
 }
 
 const defaultItems = [
-  '/images/about-01.jpg',
-  '/images/about-02.jpg',
-  '/images/about-03.jpg',
-  '/images/about-04.jpg',
-  '/images/about-05.jpg',
-  '/images/about-06.jpg',
+  '/images/about-01.webp',
+  '/images/about-02.webp',
+  '/images/about-03.webp',
+  '/images/about-04.webp',
+  '/images/about-05.webp',
+  '/images/about-06.webp',
 ];
 
 export default function InfoSection({
@@ -35,7 +36,7 @@ export default function InfoSection({
   pretitle = '',
   title,
   copy,
-  bg = 'images/blueprint.svg',
+  bg = '/images/about-blueprint.svg',
   images = [],
   intervalMs = 3000,
   styleOverrides = {},
@@ -66,7 +67,7 @@ export default function InfoSection({
   return (
     <section className='relative isolate overflow-hidden px-6 sm:py-32 py-16 scroll-mt-16 lg:overflow-visible lg:px-0' id={id}>
       <div className='absolute inset-0 -z-10 overflow-hidden'>
-        <img alt='' src={bg} className={style.bg} />
+        <Image alt='' src={bg} fill sizes='100vw' className={style.bg} />
       </div>
 
       <div className='mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10'>
@@ -94,8 +95,8 @@ export default function InfoSection({
                 outline outline-navy/10
                 aspect-16/10'
             >
-              <img alt='' src={items[prevIndex]} className='absolute inset-0 h-full w-full object-cover z-10' />
-              <img key={currentIndex} alt='' src={items[currentIndex]} className='absolute inset-0 h-full w-full object-cover z-20 drop-shadow-xl/50 animate-slide-left' />
+              <Image alt='' src={items[prevIndex]} fill sizes='(max-width: 1024px) 100vw, 50vw' className='absolute inset-0 h-full w-full object-cover z-10' />
+              <Image key={currentIndex} alt='' src={items[currentIndex]} fill sizes='(max-width: 1024px) 100vw, 50vw' className='absolute inset-0 h-full w-full object-cover z-20 drop-shadow-xl/50 animate-slide-left' />
             </div>
           </div>
         </div>

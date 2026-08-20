@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const trustedby = {
   id: 'trustedby',
   content:{
@@ -16,32 +18,32 @@ const trustedby = {
 
 const items = [
   { alt:`Engineers Australia`,
-    src:`/images/engineersaustralia.svg`,
+    src:`/images/trustedby-engineersaustralia.svg`,
     width:300,
     height:300,
   },
   { alt:`The Building and Plumbing Commission`,
-    src:`/images/buildingandplumbing.svg`,
+    src:`/images/trustedby-buildingandplumbing.svg`,
     width:300,
     height:158,
   },
   { alt:`Foundation & Footings Society`,
-    src:`/images/foundation.svg`,
+    src:`/images/trustedby-foundation.svg`,
     width:300,
     height:158,
   },
   { alt:`Australasian Land & Groundwater Association`,
-    src:`/images/alga.svg`,
+    src:`/images/trustedby-alga.svg`,
     width:300,
     height:158,
   },
   { alt:`Environment Institute of Australia and New Zealand`,
-    src:`/images/environment.svg`,
+    src:`/images/trustedby-environment.svg`,
     width:300,
     height:158,
   },
   { alt:`Soil Science Australia`,
-    src:`/images/soilscience.svg`,
+    src:`/images/trustedby-soilscience.svg`,
     width:300,
     height:158,
   },
@@ -58,7 +60,7 @@ export default function TrustedBy() {
         </div>
         <div className='mt-20 grid gap-6 md:grid-cols-3'>
           {items.map((item) => (
-            <img
+           <Image
               data-aos='fade-right'
               key={item.alt}
               alt={item.alt}

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
@@ -9,8 +10,8 @@ const home = {
   content:{
     title: 'Practical structural engineering for builds all around Victoria.',
     subtitle: 'We help builders, architects and owners deliver safe, compliant residential and small commercial structures across Melbourne, Geelong, Bendigo and Ballarat.',
-    video:`https://melbournestructural.s3.us-east-1.amazonaws.com/hero.webm`,
-    poster:`/video/hero-bg.jpg`,
+    video:`/video/video-hero.webm`,
+    poster:`/images/home-hero.webp`,
     cta1: 
       { copy:'Get a Quote',
         link: '#getaquote'
@@ -53,10 +54,12 @@ export default function Home() {
     <section className='relative isolate flex min-h-screen items-center overflow-hidden bg-navy text-white'  aria-labelledby='hero-heading' id={home.id}>
       <div className='absolute inset-0' aria-hidden='true' //video background container
       >
-        <img
+        <Image
           src={home.content.poster}
           alt=''
           aria-hidden='true'
+          fill
+          sizes='100vw'
           className='pointer-events-none absolute inset-0 h-full w-full object-cover z-0 md:hidden'
         />
         <video

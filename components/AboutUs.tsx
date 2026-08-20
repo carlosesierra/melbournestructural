@@ -30,14 +30,14 @@ const aboutContent = {
       We look forward to working with you on your next project - welcome to Melbourne Structural!
     </>
   ),
-  bg: 'images/blueprint.svg',
+  bg: '/images/about-blueprint.svg',
   images: [
-    '/images/about-01.jpg',
-    '/images/about-02.jpg',
-    '/images/about-03.jpg',
-    '/images/about-04.jpg',
-    '/images/about-05.jpg',
-    '/images/about-06.jpg',
+    '/images/about-01.webp',
+    '/images/about-02.webp',
+    '/images/about-03.webp',
+    '/images/about-04.webp',
+    '/images/about-05.webp',
+    '/images/about-06.webp',
   ],
 };
 

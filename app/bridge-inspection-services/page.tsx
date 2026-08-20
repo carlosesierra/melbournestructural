@@ -83,7 +83,7 @@ const bridgeContent = {
       </ul>
     </>
   ),
-  bg: 'images/blueprint.svg',
+  bg: '/images/about-blueprint.svg',
   images: [
     '/images/bridge-01.webp',
     '/images/bridge-02.webp',

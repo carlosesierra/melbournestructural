@@ -11,7 +11,7 @@ const navigation = {
   content:{
     logo:{
       copy:`Melbourne Structural`,
-      img:`/images/logo-horizontal.svg`,
+      img:`/images/home-logo.svg`,
       href:`https://www.melbournestructural.com.au/`,
     },
     phone:{
@@ -148,7 +148,7 @@ export default function TopMenu() {
                 <span className='sr-only'>{navigation.content.logo.copy}</span>
                 <img
                   alt=''
-                  src='/images/favicon.svg'
+                  src='/icon.svg'
                   className='h-8 w-auto'
                 />
               </Link>

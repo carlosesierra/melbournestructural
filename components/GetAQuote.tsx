@@ -340,13 +340,13 @@ export default function GetAQuote() {
         </form>
         <div 
           data-aos='flip-left'
-          className='flex mt-16 '>
+          className='flex mt-16'>
             <span className='sr-only'>melbourne Structural</span>
-              <img
-                alt=''
-                src='/images/favicon.svg'
-                className='h-80 w-full'
-              />
+            <img
+              alt=''
+              src='/icon.svg'
+              className='h-80 w-full object-contain'
+            />
           </div>
       </div>
       </div>
