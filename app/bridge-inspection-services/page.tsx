@@ -83,7 +83,7 @@ const bridgeContent = {
       </ul>
     </>
   ),
-  bg: '/images/about-blueprint.svg',
+  bg: 'images/blueprint.svg',
   images: [
     '/images/bridge-01.webp',
     '/images/bridge-02.webp',
@@ -95,7 +95,7 @@ const bridgeContent = {
 
 export default function Page() {
   return (
-    <div>
+    <div className='pt-24'>
       <InfoSection
         id={bridgeContent.id}
         pretitle={bridgeContent.pretitle}
