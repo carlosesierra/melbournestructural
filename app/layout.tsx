@@ -40,8 +40,8 @@ export const metadata: Metadata = {
         },
       },
   icons: {
-    icon: '/images/favicon.svg', // Relative path to your icon
-    apple: '/images/favicon.svg', // For Apple devices
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/icon.svg', type: 'image/svg+xml' }],
   },
 };
 

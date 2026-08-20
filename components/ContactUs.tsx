@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 const contactus = {
@@ -6,7 +7,7 @@ const contactus = {
     pretitle: 'Contact Us',
     title: 'We are Melbourne based',
     copy:`Serving Greater Melbourne, Geelong, Bendigo, Ballarat and the whole of Victoria, Australia.`,
-    bg:`images/melbourne.jpg`,
+    bg:`/images/contact-melbourne.webp`,
   },
   style:{
     pretitle:`mt-3 uppercase`,
@@ -30,9 +31,11 @@ export default function ContactUs() {
    <section className='relative isolate overflow-hidden px-6 py-24 sm:py-32' id={contactus.id}>
       <div className='absolute inset-0 -z-10 overflow-hidden' // bg image
       >
-        <img
+        <Image
             alt=''
             src={contactus.content.bg}
+            fill
+            sizes='100vw'
             className={contactus.style.bg}
           />
       </div>
